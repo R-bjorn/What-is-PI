@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 public class PiGuiGenerator implements ActionListener {
@@ -28,16 +29,18 @@ public class PiGuiGenerator implements ActionListener {
     private JFrame frame = new JFrame("Pi Number");
     private JPanel panel = new JPanel(new GridLayout(width, height, 1, 1));
     private JButton nextButton = new JButton("Next");
+    private JTextField widthField = new JTextField(5);
+    private JTextField heightField = new JTextField(5);
+    private JLabel widthLabel = new JLabel("Enter Width: ");
+    private JLabel heightLabel = new JLabel("Enter Height: ");
+    
+    private JPanel inputPanel = new JPanel();
+    
+    private JButton submitButton = new JButton("Submit");
     
     public PiGuiGenerator() {
-        // Calculate the first 2500 digits of pi
-        piDigits = pi.getPiDigits(currentIndex, limit);
-        for(int ru=0 ; ru < piDigits.length(); ru ++) {
-
-        	System.out.println(piDigits.charAt(ru));
-        }
-//        System.out.println("Length string - " + piDigits.length());
-        
+    	// Calculate the first width * height digits of pi
+    	piDigits = pi.getPiDigits(currentIndex, limit);
         // Create the JLabels and add them to the panel
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -53,8 +56,16 @@ public class PiGuiGenerator implements ActionListener {
         
         // Set the first 2500 digits of pi in the JLabels
         setCurrentDigits();
+
+        submitButton.addActionListener(this);
+        inputPanel.add(widthLabel);
+        inputPanel.add(widthField);
+        inputPanel.add(heightLabel);
+        inputPanel.add(heightField);
+        inputPanel.add(submitButton);
         
-        // Add the panel and button to the frame
+        // Add the input panel to the frame
+        frame.getContentPane().add(inputPanel, BorderLayout.NORTH);
         frame.getContentPane().add(panel, BorderLayout.CENTER);
         frame.getContentPane().add(nextButton, BorderLayout.SOUTH);
         nextButton.addActionListener(this);
@@ -123,17 +134,35 @@ public class PiGuiGenerator implements ActionListener {
     }
     
     public void actionPerformed(ActionEvent e) {
-        // Move to the next 2500 digits of pi and update the JLabels
-        currentIndex += limit;
-        newLimit += limit;
-        System.out.println("----------------------------------------- current index : " + currentIndex + ", Limit : " + limit);
-        // Change the piGenerator Digit
-    	piDigits = pi.getPiDigits(currentIndex, newLimit);
-    	for(int ru=0 ; ru < piDigits.length(); ru ++) {
-
-        	System.out.println(piDigits.charAt(ru));
+        if (e.getSource() == submitButton) {
+            width = Integer.parseInt(widthField.getText());
+            height = Integer.parseInt(heightField.getText());
+            limit = width * height;
+            newLimit = limit;
+            digits = new JLabel[width][height];
+            panel.removeAll();
+            panel.setLayout(new GridLayout(width, height, 1, 1));
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    digits[i][j] = new JLabel(" ");
+                    digits[i][j].setFont(new Font("Courier New", Font.PLAIN, 12));
+                    digits[i][j].setHorizontalAlignment(SwingConstants.CENTER);
+                    digits[i][j].setPreferredSize(new Dimension(20, 20));
+                    digits[i][j].setBackground(Color.WHITE);
+                    digits[i][j].setOpaque(true);
+                    panel.add(digits[i][j]);
+                }
+            }
+//            frame.pack();
+            piDigits = pi.getPiDigits(currentIndex, newLimit);
+            setCurrentDigits();
+        } else {
+            // Move to the next 2500 digits of pi and update the JLabels
+            currentIndex += limit;
+            newLimit += limit;
+            piDigits = pi.getPiDigits(currentIndex, newLimit);
+            setCurrentDigits();
         }
-        setCurrentDigits();
     }
     
     public static void main(String[] args) {
