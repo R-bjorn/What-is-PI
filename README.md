@@ -57,6 +57,67 @@ The `PiGuiGenerator.java` class is responsible for displaying the digits of pi g
 ## Results:
 The implementation of the `PiNumber.java` and `PiGuiGenerator.java` classes allows for the generation and visualization of the digits of pi. The program runs without any errors and generates accurate pi digits. The GUI provides a simple and intuitive interface for users to interact with the program. Users can specify the width and height of the GUI display, navigate through the generated digits using the "Previous" and "Next" buttons, and save the displayed digits as an image file using the "Save as JPG" button.
 
+<details><summary>Pi GUI Generator Frame</summary>
+ 
+ ![OutputResult](https://user-images.githubusercontent.com/81584201/234064659-dc71976b-3b63-446b-b4dc-fe8c8b72617a.jpg)
+ 
+</details>
+
+> Here are some of the results of using different values of width and height. You can see different patterns are being designed as we increase the value of width and height, allowing it to include more digits of pi within one frame. 
+> 
+> <details><summary>Frame with Width : 2 and Height 2</summary>
+>
+> This Gif contains 50 images.
+>
+> ![2x2](https://user-images.githubusercontent.com/81584201/234066064-97939308-8897-416e-9615-57b5f89a6362.gif)
+> 
+> </details>
+> 
+> 
+> <details><summary>Frame with Width : 4 and Height 4</summary>
+>
+> This Gif contains 50 images.
+>
+> ![4x4](https://user-images.githubusercontent.com/81584201/234066083-b666314a-c1f0-44e3-9057-a0fa781b0700.gif)
+> 
+> </details>
+> 
+> 
+> <details><summary>Frame with Width : 6 and Height 6</summary>
+>
+> This Gif contains 50 images.
+>
+> ![6x6](https://user-images.githubusercontent.com/81584201/234066103-b983ae8d-7eaa-4718-a1a5-f3910dc6ac65.gif)
+> 
+> </details>
+> 
+> 
+> <details><summary>Frame with Width : 10 and Height 10</summary>
+>
+> This Gif contains 50 images.
+>
+> ![10x10](https://user-images.githubusercontent.com/81584201/234066148-88fc1edc-5169-48ea-b7e3-246a1b408a9c.gif)
+> 
+> </details>
+> 
+> 
+> <details><summary>Frame with Width : 20 and Height 20</summary>
+>
+> This Gif contains 25 images.
+>
+> ![20x20](https://user-images.githubusercontent.com/81584201/234066246-9ed1c359-8415-419e-9d66-7ea55eb8d6a4.gif)
+> 
+> </details>
+> 
+> 
+> <details><summary>Frame with Width : 50 and Height 50</summary>
+>
+> This Gif contains 10 images.
+>
+> ![50x50](https://user-images.githubusercontent.com/81584201/234066273-a1080471-9d9e-45e5-b05b-a407ad3150c1.gif)
+> 
+> </details>
+> 
 ## Discussion:
 The implementation of the `PiNumber.java` class uses the BBP formula and the Gauss-Legendre algorithm to generate the digits of pi. The BBP formula allows for the calculation of individual digits of pi without having to calculate all the preceding digits. The Gauss-Legendre algorithm uses an iterative process to generate the digits of pi one by one. The implementation of the `PiGuiGenerator.java` class
 
