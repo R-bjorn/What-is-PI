@@ -28,14 +28,18 @@ public class PiGuiGenerator implements ActionListener {
     private JLabel[][] digits = new JLabel[width][height];
     private JFrame frame = new JFrame("Pi Number");
     private JPanel panel = new JPanel(new GridLayout(width, height, 1, 1));
+    
+    // Next and Prev buttons
+    private JButton prevButton = new JButton("Previous");
     private JButton nextButton = new JButton("Next");
+    private JPanel buttonPanel = new JPanel();
+    
+    // Width - Height Text input fields
     private JTextField widthField = new JTextField(5);
     private JTextField heightField = new JTextField(5);
     private JLabel widthLabel = new JLabel("Enter Width: ");
-    private JLabel heightLabel = new JLabel("Enter Height: ");
-    
-    private JPanel inputPanel = new JPanel();
-    
+    private JLabel heightLabel = new JLabel("Enter Height: ");    
+    private JPanel inputPanel = new JPanel();    
     private JButton submitButton = new JButton("Submit");
     
     public PiGuiGenerator() {
@@ -67,8 +71,13 @@ public class PiGuiGenerator implements ActionListener {
         // Add the input panel to the frame
         frame.getContentPane().add(inputPanel, BorderLayout.NORTH);
         frame.getContentPane().add(panel, BorderLayout.CENTER);
-        frame.getContentPane().add(nextButton, BorderLayout.SOUTH);
+        
+        // Button Panel
+        buttonPanel.add(prevButton);
+        buttonPanel.add(nextButton);
+        frame.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
         nextButton.addActionListener(this);
+        prevButton.addActionListener(this);
         
         // Set frame properties
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -156,11 +165,20 @@ public class PiGuiGenerator implements ActionListener {
 //            frame.pack();
             piDigits = pi.getPiDigits(currentIndex, newLimit);
             setCurrentDigits();
-        } else {
+        } else if (e.getSource() == nextButton) {
             // Move to the next 2500 digits of pi and update the JLabels
             currentIndex += limit;
             newLimit += limit;
+            System.out.println("startIndex : " + currentIndex + ", newLimit : "+ newLimit + ", limit : " + limit );
             piDigits = pi.getPiDigits(currentIndex, newLimit);
+            setCurrentDigits();
+        } else if (e.getSource() == prevButton) {
+        	currentIndex -= limit;
+        	currentIndex = Math.max(0,  currentIndex);
+        	newLimit -= limit;
+        	newLimit = Math.max(limit, newLimit);
+        	System.out.println("startIndex : " + currentIndex + ", newLimit : "+ newLimit + ", limit : " + limit );
+            piDigits = pi.getPiDigits(currentIndex, limit);
             setCurrentDigits();
         }
     }

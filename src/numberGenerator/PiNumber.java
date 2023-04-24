@@ -16,6 +16,7 @@ public class PiNumber {
     }
 
     public String getPiDigits(int startIndex, int limit) {
+    	
         BigInteger q = BigInteger.ONE;
         BigInteger r = BigInteger.ZERO;
         BigInteger t = BigInteger.ONE;
@@ -49,7 +50,7 @@ public class PiNumber {
                 r = nr;
             }
         }
-        
-        return sb.substring(0, limit-startIndex);
+         
+        return sb.substring(0, Math.abs(limit-startIndex));
     }
 }
