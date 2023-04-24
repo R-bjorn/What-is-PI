@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -27,11 +28,13 @@ public class PiGuiGenerator implements ActionListener {
 	private int height = 4;
 	private int limit = width * height;
     private int newLimit = limit;
+    private boolean textVisible = false;
     // Width - Height Text input fields
     private JTextField widthField = new JTextField(5);
     private JTextField heightField = new JTextField(5);
     private JLabel widthLabel = new JLabel("Enter Width: ");
     private JLabel heightLabel = new JLabel("Enter Height: "); 
+    private JCheckBox checkBox = new JCheckBox("Hide Text", textVisible);
     
     // Pi Number Generator
     private PiNumber pi = new PiNumber();	
@@ -51,6 +54,13 @@ public class PiGuiGenerator implements ActionListener {
     private JButton nextButton = new JButton("Next"); // goes to next panel
     private JButton saveButton = new JButton("Save as JPG"); // create the JButton
     private JButton submitButton = new JButton("Submit");  
+    // Add a new button to save 10 panels together
+    private JButton saveTenButton = new JButton("Save 10 Panels");
+    
+    // Declare a global counter variable to keep track of the current panel index
+    private int panelIndex = 0;
+    
+    
        
     public PiGuiGenerator() {
     	// Calculate the first width * height digits of pi
@@ -76,7 +86,10 @@ public class PiGuiGenerator implements ActionListener {
         inputPanel.add(widthField);
         inputPanel.add(heightLabel);
         inputPanel.add(heightField);
+        inputPanel.add(checkBox);
         inputPanel.add(submitButton);
+       
+        
         
         // Add the input panel to the frame
         frame.getContentPane().add(inputPanel, BorderLayout.NORTH);
@@ -86,10 +99,12 @@ public class PiGuiGenerator implements ActionListener {
         buttonPanel.add(prevButton);
         buttonPanel.add(nextButton);
         buttonPanel.add(saveButton);
+        buttonPanel.add(saveTenButton);
         frame.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
         nextButton.addActionListener(this);
         prevButton.addActionListener(this);
         saveButton.addActionListener(this);
+        saveTenButton.addActionListener(this);
         
         // Set frame properties
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -105,7 +120,7 @@ public class PiGuiGenerator implements ActionListener {
                 int row = j / height;
                 int col = j % height;
                 char digit = piDigits.charAt(i);
-                digits[row][col].setText(Character.toString(digit));
+                digits[row][col].setText( (textVisible) ? Character.toString(digit) : "");
                 digits[row][col].setBackground(getColor(digit - '0'));
                 i++;
             } else {
@@ -127,6 +142,8 @@ public class PiGuiGenerator implements ActionListener {
         if (e.getSource() == submitButton) {
             width = Integer.parseInt(widthField.getText());
             height = Integer.parseInt(heightField.getText());
+            textVisible = checkBox.isSelected();
+            System.out.println("text visible : " + textVisible);
             limit = width * height;
             newLimit = limit;
             digits = new JLabel[width][height];
@@ -146,6 +163,20 @@ public class PiGuiGenerator implements ActionListener {
             piDigits = pi.getPiDigits(currentIndex, newLimit);
             setCurrentDigits();
         } else if (e.getSource() == nextButton) {
+//        	// Save the current panel as a JPG with the name 1.jpg, 2.jpg, 3.jpg, and so on
+//            BufferedImage image = new BufferedImage(panel.getWidth(), panel.getHeight(), BufferedImage.TYPE_INT_RGB);
+//            panel.paint(image.getGraphics());
+//            String folderPath = System.getProperty("user.dir") + "/src/images/" + width + " x " + height;
+//            File folder = new File(folderPath);
+//            if (!folder.exists()) {
+//                folder.mkdirs();
+//            }
+//            File file = new File(folder, (currentIndex / limit + 1) + ".jpg");
+//            try {
+//                ImageIO.write(image, "jpg", file);
+//            } catch (IOException ex) {
+//                ex.printStackTrace();
+//            }
             // Move to the next 2500 digits of pi and update the JLabels
             currentIndex += limit;
             newLimit += limit;
@@ -180,7 +211,31 @@ public class PiGuiGenerator implements ActionListener {
                     ex.printStackTrace();
                 }
             }
-        }
+        } else if(e.getSource() == saveTenButton) {
+        	// Loop through 10 panels starting from the current index and save each one
+            for (int i = panelIndex; i < panelIndex + 50; i++) {
+            	// Save the current panel as a JPG with the name 1.jpg, 2.jpg, 3.jpg, and so on
+                BufferedImage image = new BufferedImage(panel.getWidth(), panel.getHeight(), BufferedImage.TYPE_INT_RGB);
+                panel.paint(image.getGraphics());
+                String folderPath = System.getProperty("user.dir") + "/src/images/" + width + " x " + height;
+                File folder = new File(folderPath);
+                if (!folder.exists()) {
+                    folder.mkdirs();
+                }
+                File file = new File(folder, (currentIndex / limit + 1) + ".jpg");
+                try {
+                    ImageIO.write(image, "jpg", file);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                // Move to the next 2500 digits of pi and update the JLabels
+                currentIndex += limit;
+                newLimit += limit;
+                System.out.println("startIndex : " + currentIndex + ", newLimit : "+ newLimit + ", limit : " + limit );
+                piDigits = pi.getPiDigits(currentIndex, newLimit);
+                setCurrentDigits();
+            }
+        }  
     }
     
     public static void main(String[] args) {

@@ -3,10 +3,14 @@ package numberGenerator;
 import java.math.BigInteger;
 
 public class PiNumber {
-    protected BigInteger TWO;
-    protected BigInteger THREE;
-    protected BigInteger FOUR;
-    protected BigInteger SEVEN;
+    protected static BigInteger TWO;
+    protected static BigInteger THREE;
+    protected static BigInteger FOUR;
+    protected static BigInteger SEVEN;
+    
+    private static int currentIndex = 0;
+    private static int currentLimit = 0;
+    private static String piDigits = null;
 
     public PiNumber() {
         TWO = BigInteger.valueOf(2);
@@ -14,8 +18,12 @@ public class PiNumber {
         FOUR = BigInteger.valueOf(4);
         SEVEN = BigInteger.valueOf(7);
     }
-
-    public String getPiDigits(int startIndex, int limit) {
+    
+    public static String getPiDigits(int startIndex, int limit) {
+        // If we have already computed piDigits up to the currentLimit, we can reuse the existing value
+        if (startIndex == currentIndex && limit == currentLimit && piDigits != null) {
+            return piDigits;
+        }
     	
         BigInteger q = BigInteger.ONE;
         BigInteger r = BigInteger.ZERO;
@@ -26,11 +34,11 @@ public class PiNumber {
 
         StringBuilder sb = new StringBuilder();
         BigInteger nn, nr;
-        int currentIndex = 0;
+        int i = 0;
 
-        while (sb.length() < limit + startIndex) {
+        while (sb.length() < limit) {
             if (FOUR.multiply(q).add(r).subtract(t).compareTo(n.multiply(t)) == -1) {
-                if (currentIndex >= startIndex) {
+                if (i >= startIndex) {
                     sb.append(n);
                 }
                 nr = BigInteger.TEN.multiply(r.subtract(n.multiply(t)));
@@ -38,7 +46,7 @@ public class PiNumber {
                 q = q.multiply(BigInteger.TEN);
                 r = nr;
 
-                currentIndex++;
+                i++;
             } else {
                 nr = TWO.multiply(q).add(r).multiply(l);
                 nn = q.multiply((SEVEN.multiply(k))).add(TWO).add(r.multiply(l)).divide(t.multiply(l));
@@ -50,7 +58,12 @@ public class PiNumber {
                 r = nr;
             }
         }
-         
-        return sb.substring(0, Math.abs(limit-startIndex));
+        
+        // Update the current index, limit, and piDigits variables
+        currentIndex = startIndex;
+        currentLimit = limit;
+        piDigits = sb.toString();
+        
+        return piDigits;
     }
 }
