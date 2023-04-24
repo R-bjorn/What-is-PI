@@ -1,6 +1,7 @@
 <div id="top"></div>
 
 # Pi ( π )
+![Pi](https://user-images.githubusercontent.com/81584201/234070336-63860fbd-6cf5-4da9-abc0-c272a9a69e97.jpg)
 > Succinctly, pi— which is written as the Greek letter for p, or `π` is a _mathematical constant_ that is the ratio of a circle's circumference to its diameter, approximately equal to **_3.14159_**. Regardless of the circle's size, this ratio will always equal pi.
 
 ## Brief Explanation
