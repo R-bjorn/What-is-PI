@@ -8,7 +8,12 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,9 +34,10 @@ public class PiGuiGenerator implements ActionListener {
     private JFrame frame = new JFrame("Pi Number");
     private JPanel panel = new JPanel(new GridLayout(width, height, 1, 1));
     
-    // Next and Prev buttons
-    private JButton prevButton = new JButton("Previous");
-    private JButton nextButton = new JButton("Next");
+    // User buttons
+    private JButton prevButton = new JButton("Previous"); // goes to previous panel
+    private JButton nextButton = new JButton("Next"); // goes to next panel
+    private JButton saveButton = new JButton("Save as JPG"); // create the JButton
     private JPanel buttonPanel = new JPanel();
     
     // Width - Height Text input fields
@@ -75,9 +81,11 @@ public class PiGuiGenerator implements ActionListener {
         // Button Panel
         buttonPanel.add(prevButton);
         buttonPanel.add(nextButton);
+        buttonPanel.add(saveButton);
         frame.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
         nextButton.addActionListener(this);
         prevButton.addActionListener(this);
+        saveButton.addActionListener(this);
         
         // Set frame properties
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -180,6 +188,26 @@ public class PiGuiGenerator implements ActionListener {
         	System.out.println("startIndex : " + currentIndex + ", newLimit : "+ newLimit + ", limit : " + limit );
             piDigits = pi.getPiDigits(currentIndex, limit);
             setCurrentDigits();
+        } else if(e.getSource() == saveButton) {
+        	// create a BufferedImage with the same size as the JPanel
+            BufferedImage image = new BufferedImage(panel.getWidth(), panel.getHeight(), BufferedImage.TYPE_INT_RGB);
+
+            // paint the JPanel to the BufferedImage
+            panel.paint(image.getGraphics());
+
+            // create a FileChooser dialog to let the user choose where to save the file
+            JFileChooser fileChooser = new JFileChooser();
+            int result = fileChooser.showSaveDialog(frame);
+
+            // if the user chose a file, save the BufferedImage as a JPG
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File file = fileChooser.getSelectedFile();
+                try {
+                    ImageIO.write(image, "jpg", file);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
     }
     
