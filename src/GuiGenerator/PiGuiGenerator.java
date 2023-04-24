@@ -55,7 +55,7 @@ public class PiGuiGenerator implements ActionListener {
     private JButton saveButton = new JButton("Save as JPG"); // create the JButton
     private JButton submitButton = new JButton("Submit");  
     // Add a new button to save 10 panels together
-    private JButton saveTenButton = new JButton("Save 10 Panels");
+    private JButton saveTenButton = new JButton("Save 50 Panels");
     
     // Declare a global counter variable to keep track of the current panel index
     private int panelIndex = 0;
