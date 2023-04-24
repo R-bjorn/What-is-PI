@@ -22,47 +22,51 @@ import javax.swing.SwingConstants;
 
 public class PiGuiGenerator implements ActionListener {
 	
+	// Variables for Frame size
 	private int width = 4;
 	private int height = 4;
-    
-    private PiNumber pi = new PiNumber();	
-    private int limit = width * height;
+	private int limit = width * height;
     private int newLimit = limit;
+    // Width - Height Text input fields
+    private JTextField widthField = new JTextField(5);
+    private JTextField heightField = new JTextField(5);
+    private JLabel widthLabel = new JLabel("Enter Width: ");
+    private JLabel heightLabel = new JLabel("Enter Height: "); 
+    
+    // Pi Number Generator
+    private PiNumber pi = new PiNumber();	
+    
+    // GUI Variables
     private int currentIndex = 0;
     private String piDigits = "";
     private JLabel[][] digits = new JLabel[width][height];
     private JFrame frame = new JFrame("Pi Number");
     private JPanel panel = new JPanel(new GridLayout(width, height, 1, 1));
+    private JPanel inputPanel = new JPanel();    
+    private JPanel buttonPanel = new JPanel();
+    
     
     // User buttons
     private JButton prevButton = new JButton("Previous"); // goes to previous panel
     private JButton nextButton = new JButton("Next"); // goes to next panel
     private JButton saveButton = new JButton("Save as JPG"); // create the JButton
-    private JPanel buttonPanel = new JPanel();
-    
-    // Width - Height Text input fields
-    private JTextField widthField = new JTextField(5);
-    private JTextField heightField = new JTextField(5);
-    private JLabel widthLabel = new JLabel("Enter Width: ");
-    private JLabel heightLabel = new JLabel("Enter Height: ");    
-    private JPanel inputPanel = new JPanel();    
-    private JButton submitButton = new JButton("Submit");
-    
+    private JButton submitButton = new JButton("Submit");  
+       
     public PiGuiGenerator() {
     	// Calculate the first width * height digits of pi
     	piDigits = pi.getPiDigits(currentIndex, limit);
         // Create the JLabels and add them to the panel
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                digits[i][j] = new JLabel(" ");
-                digits[i][j].setFont(new Font("Courier New", Font.PLAIN, 12));
-                digits[i][j].setHorizontalAlignment(SwingConstants.CENTER);
-                digits[i][j].setPreferredSize(new Dimension(20, 20));
-                digits[i][j].setBackground(Color.WHITE);
-                digits[i][j].setOpaque(true);
-                panel.add(digits[i][j]);
-            }
-        }
+    	for (int i = 0; i < width*height; i++) {
+    		int row = i / height;
+    		int col = i % height;
+    		digits[row][col] = new JLabel(" ");
+    		digits[row][col].setFont(new Font("Courier New", Font.PLAIN, 12));
+    		digits[row][col].setHorizontalAlignment(SwingConstants.CENTER);
+    		digits[row][col].setPreferredSize(new Dimension(20, 20));
+    		digits[row][col].setBackground(Color.WHITE);
+    		digits[row][col].setOpaque(true);
+    		panel.add(digits[row][col]);
+    	}
         
         // Set the first 2500 digits of pi in the JLabels
         setCurrentDigits();
@@ -93,61 +97,30 @@ public class PiGuiGenerator implements ActionListener {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    
+       
     private void setCurrentDigits() {
         int i = 0;
-        for (int row = 0; row < width; row++) {
-            for (int col = 0; col < height; col++) {
-                if (i < piDigits.length()) {
-                    digits[row][col].setText(Character.toString(piDigits.charAt(i)));
-                    digits[row][col].setBackground(getColor(Integer.parseInt(Character.toString(piDigits.charAt(i)))));
-                    i++;
-                } else {
-//                    digits[row][col].setText("");
-                    digits[row][col].setBackground(new Color(255,0,0));
-                }
+        for (int j = 0; j < width * height; j++) {
+            if (i < piDigits.length()) {
+                int row = j / height;
+                int col = j % height;
+                char digit = piDigits.charAt(i);
+                digits[row][col].setText(Character.toString(digit));
+                digits[row][col].setBackground(getColor(digit - '0'));
+                i++;
+            } else {
+                int row = j / height;
+                int col = j % height;
+                digits[row][col].setBackground(new Color(255,0,0));
             }
         }
     }
     
     private Color getColor(int digit) {
-    	Color bgColor;
-    	switch(digit) {
-    	    case 0:
-    	        bgColor = Color.WHITE;
-    	        break;
-    	    case 1:
-    	        bgColor = new Color(224, 224, 224); // light gray
-    	        break;
-    	    case 2:
-    	        bgColor = new Color(192, 192, 192); // gray
-    	        break;
-    	    case 3:
-    	        bgColor = new Color(160, 160, 160); // dark gray
-    	        break;
-    	    case 4:
-    	        bgColor = new Color(128, 128, 128); // darker gray
-    	        break;
-    	    case 5:
-    	        bgColor = new Color(96, 96, 96); // even darker gray
-    	        break;
-    	    case 6:
-    	        bgColor = new Color(64, 64, 64); // very dark gray
-    	        break;
-    	    case 7:
-    	        bgColor = new Color(32, 32, 32); // almost black
-    	        break;
-    	    case 8:
-    	        bgColor = new Color(16, 16, 16); // very dark
-    	        break;
-    	    case 9:
-    	        bgColor = Color.BLACK;
-    	        break;
-    	    default:
-    	        bgColor = Color.WHITE; // default to white for invalid digits
-    	}
-    	
-    	return bgColor;
+        Color[] colors = {Color.WHITE, new Color(224, 224, 224), new Color(192, 192, 192),
+                          new Color(160, 160, 160), new Color(128, 128, 128), new Color(96, 96, 96),
+                          new Color(64, 64, 64), new Color(32, 32, 32), new Color(16, 16, 16), Color.BLACK};
+        return digit >= 0 && digit <= 9 ? colors[digit] : Color.WHITE;
     }
     
     public void actionPerformed(ActionEvent e) {
@@ -159,16 +132,15 @@ public class PiGuiGenerator implements ActionListener {
             digits = new JLabel[width][height];
             panel.removeAll();
             panel.setLayout(new GridLayout(width, height, 1, 1));
-            for (int i = 0; i < width; i++) {
-                for (int j = 0; j < height; j++) {
-                    digits[i][j] = new JLabel(" ");
-                    digits[i][j].setFont(new Font("Courier New", Font.PLAIN, 12));
-                    digits[i][j].setHorizontalAlignment(SwingConstants.CENTER);
-                    digits[i][j].setPreferredSize(new Dimension(20, 20));
-                    digits[i][j].setBackground(Color.WHITE);
-                    digits[i][j].setOpaque(true);
-                    panel.add(digits[i][j]);
-                }
+            for (int i = 0; i < width * height; i++) {
+                JLabel label = new JLabel(" ");
+                label.setFont(new Font("Courier New", Font.PLAIN, 12));
+                label.setHorizontalAlignment(SwingConstants.CENTER);
+                label.setPreferredSize(new Dimension(20, 20));
+                label.setBackground(Color.WHITE);
+                label.setOpaque(true);
+                digits[i / height][i % height] = label;
+                panel.add(label);
             }
 //            frame.pack();
             piDigits = pi.getPiDigits(currentIndex, newLimit);
