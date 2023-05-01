@@ -59,7 +59,7 @@ The `PiGuiGenerator.java` class is responsible for displaying the digits of pi g
 ## Results:
 The implementation of the `PiNumber.java` and `PiGuiGenerator.java` classes allows for the generation and visualization of the digits of pi. The program runs without any errors and generates accurate pi digits. The GUI provides a simple and intuitive interface for users to interact with the program. Users can specify the width and height of the GUI display, navigate through the generated digits using the "Previous" and "Next" buttons, and save the displayed digits as an image file using the "Save as JPG" button.
 
-<details><summary>Pi GUI Generator Frame</summary>
+<details open><summary>Pi GUI Generator Frame</summary>
  
  ![OutputResult](https://user-images.githubusercontent.com/81584201/234064659-dc71976b-3b63-446b-b4dc-fe8c8b72617a.jpg)
  
@@ -67,7 +67,7 @@ The implementation of the `PiNumber.java` and `PiGuiGenerator.java` classes allo
 
 > Here are some of the results of using different values of width and height. You can see different patterns are being designed as we increase the value of width and height, allowing it to include more digits of pi within one frame. 
 > 
-> <details><summary>Frame with Width : 2 and Height 2</summary>
+> <details open><summary>Frame with Width : 2 and Height 2</summary>
 >
 > This Gif contains 50 images.
 >
@@ -76,7 +76,7 @@ The implementation of the `PiNumber.java` and `PiGuiGenerator.java` classes allo
 > </details>
 > 
 > 
-> <details><summary>Frame with Width : 4 and Height 4</summary>
+> <details open><summary>Frame with Width : 4 and Height 4</summary>
 >
 > This Gif contains 50 images.
 >
@@ -85,7 +85,7 @@ The implementation of the `PiNumber.java` and `PiGuiGenerator.java` classes allo
 > </details>
 > 
 > 
-> <details><summary>Frame with Width : 6 and Height 6</summary>
+> <details open><summary>Frame with Width : 6 and Height 6</summary>
 >
 > This Gif contains 50 images.
 >
@@ -94,7 +94,7 @@ The implementation of the `PiNumber.java` and `PiGuiGenerator.java` classes allo
 > </details>
 > 
 > 
-> <details><summary>Frame with Width : 10 and Height 10</summary>
+> <details open><summary>Frame with Width : 10 and Height 10</summary>
 >
 > This Gif contains 50 images.
 >
@@ -103,7 +103,7 @@ The implementation of the `PiNumber.java` and `PiGuiGenerator.java` classes allo
 > </details>
 > 
 > 
-> <details><summary>Frame with Width : 20 and Height 20</summary>
+> <details open><summary>Frame with Width : 20 and Height 20</summary>
 >
 > This Gif contains 25 images.
 >
@@ -112,7 +112,7 @@ The implementation of the `PiNumber.java` and `PiGuiGenerator.java` classes allo
 > </details>
 > 
 > 
-> <details><summary>Frame with Width : 50 and Height 50</summary>
+> <details open><summary>Frame with Width : 50 and Height 50</summary>
 >
 > This Gif contains 10 images.
 >
